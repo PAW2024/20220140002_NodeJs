@@ -23,4 +23,24 @@ router.post('/', (req,res)=>
     res.status(201).json(newTodo)
 });
 
+router.delete('/:id', (req, res) => {
+    const todoIndex = todos.findIndex(t => t.id === parseInt(req.params.id));
+    if (todoIndex === -1) return res.status(404).json({ message: 'Tugas tidak ditemukan' });
+
+    const deletedtodo = todos.splice(todoIndex, 1)[0];
+    res.status(200).json({ 
+        message: `Tugas ${deletedtodo.task} telah dihapus`
+    });
+});
+
+router.put('/:id', (req,res) => {
+    const todo = todos.find(t => t.id === parseInt(req.params.id));
+    if (!todo) return res.status(404).json({message: 'Tugas tidak ditemukan' });
+    todo.task = req.body.task || todo.task;
+
+    res.status(200).json({
+        message: `Tugas dengan ID ${todo.id} telah diperbarui`,
+        updatedTodo: todo
+    });
+});
 module.exports = router;
