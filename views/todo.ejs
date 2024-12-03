@@ -1,31 +1,53 @@
-<div class="container mt-5">
-    <h1 class="text-center">Todo List</h1>
+<!-- Main Content -->
+<section class="container my-5">
+    <h1 class="text-center mb-4">Todo List</h1>
+    <!-- Button to Open Modal -->
+  <div class="text-center my-4">
+    <button class="btn add-todo, btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">Add Todo</button>
+  </div>
 
-    <!-- Form to Add New Todo -->
-    <form id="addTodoForm" class="my-4">
-        <div class="input-group">
-            <input type="text" id="newTask" class="form-control" placeholder="Add a new task..." required>
-            <div class="input-group-append">
-                <button type="submit" class="btn btn-primary">Add Task</button>
+    <!-- Todo Cards -->
+    <div class="row g-3">
+      <!-- Example Card -->
+      <% todos.forEach(todo => { %>
+        <div class="col-md-4">
+          <div class="card todo-card shadow-sm">
+            <div class="card-body">
+              <h5 class="card-title">Todo</h5>
+              <span class="<%= todo.completed ? 'completed' : '' %>">
+                <%= todo.task %>
+              </span>
+              <div class="d-flex justify-content-between">
+                <button class="btn btn-sm btn-success editBtn" data-id="<%= todo.id %>">Edit</button>
+                <button class="btn btn-sm btn-danger deleteBtn" data-id="<%= todo.id %>">Delete</button>
+              </div>
             </div>
+          </div>
         </div>
-    </form>
+      <% }); %>
+    </div>
+</section>
 
-    <!-- List of Todos -->
-    <ul id="todoList" class="list-group">
-        <% todos.forEach(todo=> { %>
-            <li class="list-group-item d-flex justify-content-between align-items-center">
-                <span class="<%= todo.completed ? 'completed' : '' %>">
-                    <%= todo.task %>
-                </span>
-                <div>
-                    <button class="btn btn-sm btn-success mr-2 editBtn" data-id="<%= todo.id %>">Edit</button>
-                    <button class="btn btn-sm btn-danger deleteBtn" data-id="<%= todo.id %>">Delete</button>
-                </div>
-            </li>
-            <% }); %>
-    </ul>
-
+ <!-- Add Todo Modal -->
+ <div id="addModal" class="modal fade" tabindex="-1" aria-labelledby="addModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="addModalLabel">Add Todo</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="addTodoForm">
+            <div class="form-group">
+              <label for="newTask">Task</label>
+              <input type="text" id="newTask" class="form-control" required />
+            </div>
+            <button type="submit" class="btn btn-primary mt-3">Add Task</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
     <!-- Edit Todo Modal -->
     <div id="editModal" class="modal fade" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog">
@@ -110,3 +132,8 @@
         });
     });
 </script>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white text-center py-3">
+    <p class="mb-0 text-center">&copy; 2024 MyWebsite. All rights reserved.</p>
+  </footer>

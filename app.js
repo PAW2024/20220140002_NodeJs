@@ -17,6 +17,8 @@ app.use('/todos', todoRoutes);
 app.set('view engine','ejs');
 
 app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
+
 
 // Konfigurasi express-session
 app.use(session({
@@ -41,7 +43,7 @@ app.get('/contact', isAuthenticated,(req, res) => {
 
 });
 
-app.get('/todo-view', (req, res) => {
+app.get('/todo-view', isAuthenticated, (req, res) => {
     db.query('SELECT * FROM todos', (err, todos) => {
         if (err) return res.status(500).send('Internal Server Error');
         res.render('todo', {
@@ -50,6 +52,19 @@ app.get('/todo-view', (req, res) => {
         });
     });
 });
+
+app.get('/todos', isAuthenticated,async (req, res) => {
+    try {
+        // Fetch todos from the database or define a sample array
+        const todos = await TodoModel.find(); // Replace with your database logic
+        res.render('todo', { todos }); // Pass `todos` to the EJS template
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Server Error');
+    }
+});
+
+
 
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}/`);
